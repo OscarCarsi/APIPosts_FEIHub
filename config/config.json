@@ -1,0 +1,31 @@
+{
+  "development": {
+    "database": {
+      "url": "mongodb://localhost:27017",
+      "options": {
+        "useNewUrlParser": true
+      }
+    }
+  },
+  "test": {
+    "database": {
+      "url": "mongodb://localhost:27017",
+      "options": {
+        "useNewUrlParser": true
+      }
+    }
+  },
+  "production": {
+    "database": {
+      "protocol": "mongodb",
+      "username": "FEIHub_Admin",
+      "password": "4dm1n1str4d0r_F31Hub",
+      "name": "feihub_posts",
+      "host": "localhost",
+      "port": "27017",
+      "options": {
+        "useNewUrlParser": true
+      }
+    }
+  }
+}
