@@ -55,10 +55,10 @@ module.exports = mongoose => {
       updatedAt: 'updated_at'
     }
   });
-  newSchema.pre('save', function (next) {
+  newSchema.pre('create', function (next) {
     const doc = this;
     if (doc.isNew) {
-      mongoose.model('Post', newSchema)
+      mongoose.model('posts', newSchema)
       .findOne({}, {}, { sort: { 'id': -1 } })
       .exec()
       .then((lastDocument) => {
@@ -77,11 +77,11 @@ module.exports = mongoose => {
     }
   });
 
-  newSchema.pre('save', function (next) {
+  newSchema.pre('create', function (next) {
     const doc = this;
     doc.comments.forEach(comment => {
       if (comment.isNew) {
-        mongoose.model('Post', newSchema)
+        mongoose.model('posts', newSchema)
         .findOne({}, {}, { sort: { 'comments.commentId': -1 } })
         .exec()
         .then((lastDocument) => {
@@ -103,6 +103,6 @@ module.exports = mongoose => {
     next();
   });
 
-  const Post = mongoose.model('Post', newSchema);
+  const Post = mongoose.model('posts', newSchema);
   return Post;
 };

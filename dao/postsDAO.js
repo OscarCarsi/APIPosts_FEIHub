@@ -41,9 +41,30 @@ class postsDAO{
         ]);
         return recentPosts;
     }
+    static async getRecentPostsByAuthorsAndTarget(authors, requestedTarget) {
+        const date = new Date();
+        date.setDate(date.getDate() - 2);
+        const recentPosts = await posts.aggregate([
+        { $match: { author: { $in: authors }, target: requestedTarget, dateOfPublish: { $gte: date } } },
+        { $group: { _id: '$author', 
+                    posts: { $push: { 
+                        id: '$id',
+                        title: '$title', 
+                        author: '$author',
+                        body: '$body',
+                        dateOfPublish: '$dateOfPublish',
+                        photos: '$photos',
+                        target: '$target',
+                        comments: '$comments',
+                        likes: '$likes',
+                        dislikes: '$dislikes'
+                    } } } }
+        ]);
+        return recentPosts;
+    }
     static async addComment(comment, id){
         const post = await posts.findOne({id});
-        post.comments.push(comment);
+        post.comments.create(comment);
         return await post.update({comments:post.comments});
     }
     static async editComment(postId, commentId, newBody) {
@@ -87,14 +108,14 @@ class postsDAO{
         }
         return await post.update({ dislikes: post.dislikes });
     }
-    static async addReport(id) {
+    static async addReport(id, totalReports) {
         const post = await posts.findOne({ id });
-        post.reports += 1;
+        post.reports += totalReports;
         return await post.update({ reports: post.reports });
     }
     static async getReportedPosts() {
         const reportedPosts = await posts.findAll({where: {reports: { $gt: 0 }}, order: [['reports', 'DESC']]});
         return reportedPosts;
-      }
+    }
       
 }
