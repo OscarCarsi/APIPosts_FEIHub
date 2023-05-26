@@ -163,3 +163,21 @@ const postReported = async (req, res = response) => {
         res.status(500).json({message: "It was not possible to retrieve the publications, please try again later.", error});
     }
 }
+module.exports = {
+    createPost,
+    editPostPut,
+    deletePost,
+    postsByAuthorGet,
+    postByIdAndTitleGet,
+    principalPostsGet,
+    principalPostByTargetGet,
+    createCommentPost,
+    editCommentPut,
+    deleteComment,
+    addLikePut,
+    addDislikePut,
+    removeLikePut,
+    removeDislikePut,
+    addReportPost,
+    postReported
+};
