@@ -1,4 +1,4 @@
-const {response, json} = require('express');
+const {response} = require('express');
 const chatsDAO = require('../dao/chatsDAO');
 
 const createChatPost = async (req, res = response) =>{
