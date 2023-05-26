@@ -117,5 +117,6 @@ class postsDAO{
         const reportedPosts = await posts.findAll({where: {reports: { $gt: 0 }}, order: [['reports', 'DESC']]});
         return reportedPosts;
     }
-      
+    
 }
+module.exports = postsDAO;

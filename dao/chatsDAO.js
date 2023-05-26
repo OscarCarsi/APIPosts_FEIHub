@@ -28,3 +28,4 @@ class chatsDAO{
     }
 
 }
+module.exports = chatsDAO;
