@@ -15,7 +15,6 @@ if (config.database.url) {
 
 const db = () => {
   const m = {};
-
   fs
     .readdirSync(__dirname)
     .filter(file => {
