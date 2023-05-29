@@ -1,5 +1,6 @@
 const { response } = require('express');
 const postsDAO = require('../dao/postsDAO');
+const {use} = require('../routes/posts');
 
 const createPost = async (req, res = response) => {
     const { title, author, body, dateOfPublish, photos, target} = req.body;
