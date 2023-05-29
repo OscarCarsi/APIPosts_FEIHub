@@ -32,11 +32,21 @@ const getMessages = async (req, res = response) =>{
     try{
         const participants = [{username:usernameFrom},{username:usernameTo}];
         const chat = await chatsDAO.getMessagesByDate(participants);
-        res.status(200).json(chat);
+        const validated = await validateChat(chat, res);
+        res.status(200).json({chat: validated});
     }catch(error){
         console.error(error);
         res.status(500).json({message: "We were unable to retrieve the messages at this time, please try again later.", error})
     }
+}
+const validateChat = (chat, res) =>{
+    return new Promise((resolve, reject) =>{
+        if (chat != null){
+            resolve(chat);
+        }else{
+            reject(res.status(404).json({message:'Chat does not exist'}))
+        }
+    })
 }
 module.exports = {
     createChatPost,

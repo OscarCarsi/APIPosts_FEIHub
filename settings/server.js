@@ -13,7 +13,8 @@ class Server{
         this.app.use(express.static('public'));
     }
     routes(){
-        this.app.use('/apifeihub/posts', require('../routes/users'));
+        this.app.use('/apipostsfeihub/posts', require('../routes/posts'));
+        this.app.use('/apipostsfeihub/chats', require('../routes/chats'));
     }
     listen(){
         this.app.listen(this.port, () => {
