@@ -1,7 +1,8 @@
 {
   "development": {
     "database": {
-      "url": "mongodb://localhost:27017",
+      "url": "mongodb://127.0.0.1:27017/feihub_posts",
+      "serverSelectionTimeoutMS": 30000,
       "options": {
         "useNewUrlParser": true
       }
@@ -9,7 +10,7 @@
   },
   "test": {
     "database": {
-      "url": "mongodb://localhost:27017",
+      "url": "mongodb://127.0.0.1:27017/feihub_posts?directConnection=true&serverSelectionTimeoutMS=20&appName=mongosh+1.8.0",
       "options": {
         "useNewUrlParser": true
       }
@@ -21,7 +22,7 @@
       "username": "FEIHub_Admin",
       "password": "4dm1n1str4d0r_F31Hub",
       "name": "feihub_posts",
-      "host": "localhost",
+      "host": "127.0.0.1",
       "port": "27017",
       "options": {
         "useNewUrlParser": true

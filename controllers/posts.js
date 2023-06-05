@@ -5,12 +5,13 @@ const {use} = require('../routes/posts');
 const createPost = async (req, res = response) => {
     const { title, author, body, dateOfPublish, photos, target} = req.body;
     try {
-      const post = { title, author, body, dateOfPublish, photos, target };
-      const newPost = await postsDAO.addNewPost(post);
-      res.status(201).json(newPost);
+        const id = 1;
+        const post = {id, title, author, body, dateOfPublish, photos, target };
+        const newPost = await postsDAO.addNewPost(post);
+        res.status(201).json(newPost);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "We were unable to create your post, try again later", error });
+        console.error(error);
+        res.status(500).json({ message: "We were unable to create your post, try again later"});
     }
 }
 const editPostPut = async(req, res = response) => {
@@ -21,7 +22,7 @@ const editPostPut = async(req, res = response) => {
         res.status(200).json(editedPost);
     } catch(error){
         console.error(error);
-        res.status(500).json({message: "There was an error editing your post, try again later.", error});
+        res.status(500).json({message: "There was an error editing your post, try again later."});
     }
 }
 const deletePost = async(req, res= response) => {
