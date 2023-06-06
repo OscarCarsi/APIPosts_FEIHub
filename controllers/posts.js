@@ -5,8 +5,7 @@ const {use} = require('../routes/posts');
 const createPost = async (req, res = response) => {
     const { title, author, body, dateOfPublish, photos, target} = req.body;
     try {
-        const id = 1;
-        const post = {id, title, author, body, dateOfPublish, photos, target };
+        const post = { title, author, body, dateOfPublish, photos, target};
         const newPost = await postsDAO.addNewPost(post);
         res.status(201).json(newPost);
     } catch (error) {
@@ -17,7 +16,7 @@ const createPost = async (req, res = response) => {
 const editPostPut = async(req, res = response) => {
     const { id, title, body, dateOfPublish, target} = req.body;
     try{
-        const post = { title, body, dateOfPublish, photos, target };
+        const post = { title, body, dateOfPublish, target };
         const editedPost = await postsDAO.editPost(post, id);
         res.status(200).json(editedPost);
     } catch(error){
@@ -97,15 +96,15 @@ const editCommentPut = async (req, res = response) => {
     }
 }
 const deleteComment = async (req, res = response) => {
-    const{postId, commentId} = req.body;
+    const { postId, commentId } = req.body;
     try {
-        await postsDAO.deleteComment(postId, commentId);
-        res.status(200).json({message: "Deleted comment"});
-    }catch(error){
-        console.error(error);
-        res.status(500).json({message: "It has not been possible to delete your comment, try again later", error})
+      const postWithoutComment = await postsDAO.deleteComment(postId, commentId);
+      res.status(200).json({ post: postWithoutComment, message: "Deleted comment" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "It has not been possible to delete your comment, try again later", error });
     }
-}
+}  
 const addLikePut = async (req, res = response) => {
     const postId = req.params;
     try {
@@ -146,16 +145,16 @@ const removeDislikePut = async (req, res = response) => {
         res.status(500).json({message: "It was not possible to remove the dislike on this post, try again later.", error})
     }
 }
-const addReportPost = async (req, res = response) => {
-    const {postId, totalReports} = req.params;
-    try {
-        await postsDAO.addReport(postId, totalReports);
-        res.status(200).json({message: "Reported post"});
-    }catch(error){
-        console.error(error);
-        res.status(500).json({message: "It was not possible to report this post, try again later.", error})
+    const addReportPost = async (req, res = response) => {
+        const {postId, totalReports} = req.body;
+        try {
+            await postsDAO.addReport(postId, totalReports);
+            res.status(200).json({message: "Reported post"});
+        }catch(error){
+            console.error(error);
+            res.status(500).json({message: "It was not possible to report this post, try again later.", error})
+        }
     }
-}
 const postReported = async (req, res = response) => {
     try{
         const posts = await postsDAO.getReportedPosts();

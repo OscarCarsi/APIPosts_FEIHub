@@ -6,6 +6,6 @@ const {
 } = require ('../controllers/chats');
 const router = Router();
 router.post('/createChat', createChatPost);
-router.put('/addNewMesagePut', addNewMessagePut);
+router.put('/addNewMessage', addNewMessagePut);
 router.get('/getChat', getMessages);
 module.exports = router;
