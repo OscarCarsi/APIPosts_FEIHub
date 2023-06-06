@@ -1,5 +1,5 @@
 const mongoose = require ('mongoose')
-const config = requite ('../config/config.json')
+const config = require ('../config/config.json')
 const chatSchema = mongoose.Schema({
     participants: [{
         username: {
@@ -22,32 +22,53 @@ const chats = mongoose.model('chats', chatSchema);
 mongoose.connect(config.development.database.url);
 
 class chatsDAO{
-    static async startNewChat(newChat){
-        const chatExistent = await chats.findOne(newChat.participants);
-        if (!chatExistent) {
-            const chat = new chats({ participants, messages });
-            return await chats.save(chat);
-        }
+    static async startNewChat(newChat) {
+      const { participants } = newChat;
+      const sortedParticipants = participants.map(({ username }) => username).sort();
+      const chatExistent = await chats.findOne({$and: [
+      { 'participants.username': sortedParticipants[0] },
+      { 'participants.username': sortedParticipants[1] }]});
+      if (chatExistent.length === 0) {
+        const chat = new chats(newChat);
+        return await chat.save();
+      }else{
+        throw new Error(`Chat with participants ${JSON.stringify(participants)} alredy exists`);
+      }
     }
     static async addMessageToChat(newChat) {
-        const chatExistent = await chats.findOne(newChat.participants);
-        if (chatExistent) {
-            chatExistent.messages.push(messages); 
-            await chatExistent.save();
-            return chatExistent;
-        } else {
-            throw new Error(`Chat with participants ${JSON.stringify(participants)} not found.`);
-        }
+      const { participants, message } = newChat;
+      const sortedParticipants = participants.map(({ username }) => username).sort();
+      const chatExistent = await chats.findOne({$and: [
+      { 'participants.username': sortedParticipants[0] },
+      { 'participants.username': sortedParticipants[1] }]});
+      if (chatExistent) {
+          chatExistent.messages.push(message); 
+          await chatExistent.save();
+          return chatExistent;
+      } else {
+          throw new Error(`Chat with participants ${JSON.stringify(participants)} not found.`);
+      }
     }
     static async getMessagesByDate(participants) {
-        const chat = await chats.findOne({ participants });
-        if (chat) {
-          const sortedMessages = chat.messages.sort((a, b) => b.dateOfMessage - a.dateOfMessage);
-          return sortedMessages;
-        } else {
-          throw new Error(`Chat with participants ${JSON.stringify(participants)} not found.`);
-        }
+      const sortedParticipants = participants.map(({ username }) => username).sort();
+      const chat = await chats.find({
+        $and: [
+          { 'participants.username': sortedParticipants[0] },
+          { 'participants.username': sortedParticipants[1] }
+        ]
+      });
+  
+      if (!chat || chat.length === 0) {
+        throw new Error(`Chat with participants ${JSON.stringify(participants)} not found.`);
+      }
+      chat[0].messages.sort((a, b) => a.dateOfMessage - b.dateOfMessage);
+  
+      return chat[0].messages;   
     }
+    
+    
+    
+    
 
 }
 module.exports = chatsDAO;
