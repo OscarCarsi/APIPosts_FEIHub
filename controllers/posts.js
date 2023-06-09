@@ -44,6 +44,16 @@ const postsByAuthorGet = async (req, res = response) => {
         res.status(500).json({message: "It was not possible to retrieve the publications, please try again later.", error});
     }
 }
+const postsRandomByTarget = async (req, res = response) => {
+    const target = req.params.target;
+    try{
+        const posts = await postsDAO.getRecentRandomPostsByTarget(target)
+        res.status(200).json(posts);
+    }catch(error){
+        console.error(error);
+        res.status(500).json({message: "It was not possible to retrieve the publications, please try again later.", error});
+    }
+}
 const postByIdAndTitleGet = async (req, res = response) => {
     const {id, title} = req.body;
     try{
@@ -170,6 +180,7 @@ module.exports = {
     deletePost,
     postsByAuthorGet,
     postByIdAndTitleGet,
+    postsRandomByTarget,
     principalPostsGet,
     principalPostByTargetGet,
     createCommentPost,

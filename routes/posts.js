@@ -14,6 +14,7 @@ const {
     addDislikePut,
     removeLikePut,
     removeDislikePut,
+    postsRandomByTarget,
     addReportPost,
     postReported
 } = require ('../controllers/posts');
@@ -22,6 +23,7 @@ router.post('/createPost', createPost);
 router.put('/editPost', editPostPut);
 router.delete('/deletePost/:id', deletePost);
 router.get('/postsAuthor/:author', postsByAuthorGet);
+router.get('/postsTarget/:target', postsRandomByTarget)
 router.post('/postIdTitle', postByIdAndTitleGet);
 router.post('/principalPosts', principalPostsGet);
 router.post('/principalPostsTarget', principalPostByTargetGet);

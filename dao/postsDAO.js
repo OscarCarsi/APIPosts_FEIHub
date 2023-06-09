@@ -109,6 +109,31 @@ class postsDAO{
       ]);
       return recentPosts;
     }    
+    static async getRecentRandomPostsByTarget(target) {
+      const everybody = "EVERYBODY";
+      const date = new Date();
+      date.setDate(date.getDate() - 5);
+      const recentPosts = await posts.aggregate([
+        { $match: { $or: [{ target: { $regex: `.*${target}.*` } }, { target: { $regex: `.*${everybody}.*` } }], dateOfPublish: { $gte: date } } },
+        { $sort: {likes: -1, dateOfPublish: -1, dislikes: 1 } },
+        {
+          $project: {
+            _id: 0,
+            id: 1,
+            title: 1,
+            author: 1,
+            body: 1,
+            dateOfPublish: 1,
+            photos: 1,
+            target: 1,
+            comments: 1,
+            likes: 1,
+            dislikes: 1,
+          },
+        },
+      ]);
+      return recentPosts;
+    }      
     static async getRecentPostsByAuthorsAndTarget(authors, requestedTarget) {
       const date = new Date();
       date.setDate(date.getDate() - 5);
