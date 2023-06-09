@@ -7,5 +7,5 @@ const {
 const router = Router();
 router.post('/createChat', createChatPost);
 router.put('/addNewMessage', addNewMessagePut);
-router.get('/getChat', getMessages);
+router.post('/getChat', getMessages);
 module.exports = router;
