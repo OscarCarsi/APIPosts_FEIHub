@@ -85,11 +85,11 @@ class postsDAO{
         const post = await posts.find({id: id, title: title});
         return post
     }
-    static async getRecentPostsByAuthors(authors) {
+    static async getRecentPostsByAuthors(authors, target) {
+      const everybody = 'EVERYBODY'
       const date = new Date();
       date.setDate(date.getDate() - 5);
-      const recentPosts = await posts.aggregate([
-        { $match: { author: { $in: authors }, dateOfPublish: { $gte: date } } },
+      const recentPosts = await posts.aggregate([{ $match: {author: { $in: authors }, $or: [{ target: { $regex: `.*${target}.*` } },{ target: { $regex: `.*${everybody}.*` } }],dateOfPublish: { $gte: date }}},
         { $sort: {likes: -1, dateOfPublish: -1, dislikes: 1 } },
         {
           $project: {

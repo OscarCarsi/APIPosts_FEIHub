@@ -65,9 +65,9 @@ const postByIdAndTitleGet = async (req, res = response) => {
     }
 }
 const principalPostsGet = async (req, res = response) => {
-    const authors = req.body;
+    const {authors, target} = req.body;
     try{
-        const posts = await postsDAO.getRecentPostsByAuthors(authors);
+        const posts = await postsDAO.getRecentPostsByAuthors(authors, target);
         res.status(200).json(posts);
     }catch(error){
         console.error(error);
