@@ -1,0 +1,26 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8082
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 127.0.0.1:27018:27017
+    volumes:
+      - mongodb-data:/data/db
+
+  init-mongo:
+    image: mongo:latest
+    command: mongo --host mongodb --port 27017 --eval 'db.getSiblingDB("feihub_posts").createCollection("posts"); db.getSiblingDB("feihub_posts").createCollection("chats")'
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb-data:
