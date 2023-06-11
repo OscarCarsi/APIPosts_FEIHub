@@ -28,7 +28,7 @@ class chatsDAO{
       const chatExistent = await chats.findOne({$and: [
       { 'participants.username': sortedParticipants[0] },
       { 'participants.username': sortedParticipants[1] }]});
-      if (chatExistent.length === 0) {
+      if (chatExistent == null) {
         const chat = new chats(newChat);
         return await chat.save();
       }else{
@@ -42,7 +42,7 @@ class chatsDAO{
       { 'participants.username': sortedParticipants[0] },
       { 'participants.username': sortedParticipants[1] }]});
       if (chatExistent) {
-          chatExistent.messages.push(message); 
+          chatExistent.messages.push(message);
           await chatExistent.save();
           return chatExistent;
       } else {
@@ -57,18 +57,18 @@ class chatsDAO{
           { 'participants.username': sortedParticipants[1] }
         ]
       });
-  
+
       if (!chat || chat.length === 0) {
         throw new Error(`Chat with participants ${JSON.stringify(participants)} not found.`);
       }
       chat[0].messages.sort((a, b) => a.dateOfMessage - b.dateOfMessage);
-  
-      return chat[0].messages;   
+
+      return chat[0].messages;
     }
-    
-    
-    
-    
+
+
+
+
 
 }
 module.exports = chatsDAO;
