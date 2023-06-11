@@ -14,9 +14,9 @@ const createPost = async (req, res = response) => {
     }
 }
 const editPostPut = async(req, res = response) => {
-    const { id, title, body, dateOfPublish, target} = req.body;
+    const { id, title, body, dateOfPublish, target, photos} = req.body;
     try{
-        const post = { title, body, dateOfPublish, target };
+        const post = { title, body, dateOfPublish, target, photos };
         const editedPost = await postsDAO.editPost(post, id);
         res.status(200).json(editedPost);
     } catch(error){
