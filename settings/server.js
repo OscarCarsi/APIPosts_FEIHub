@@ -15,6 +15,7 @@ class Server{
     routes(){
         this.app.use('/apipostsfeihub/posts', require('../routes/posts'));
         this.app.use('/apipostsfeihub/chats', require('../routes/chats'));
+        this.app.use('/apidocs', require ('../routes/docs'))
     }
     listen(){
         this.app.listen(this.port, () => {

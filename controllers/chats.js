@@ -1,6 +1,32 @@
 const {response} = require('express');
 const chatsDAO = require('../dao/chatsDAO');
-
+/**
+ * @swagger
+ * /createchat/:
+ *  post:
+ *    summary: create new chat
+ *    tags : [Chats]
+ *    requestBody:
+ *      required.true
+ *    content:
+ *      usernameFrom:
+ *        type: String
+ *        description: the username user to send message
+ *      usernameTo:
+ *        type: String
+ *        description: the username user to recive message
+ *      newMessage:
+ *        type: String
+ *        description: contain body of message
+ *      date:
+ *        type: date
+ *        description: date of send message
+ *    responses:
+ *      201:
+ *        description: get chat
+ *      500:
+ *        description: error server
+ */
 const createChatPost = async (req, res = response) => {
     const { usernameFrom, usernameTo, newMessage, date } = req.body;
     try {
@@ -14,6 +40,33 @@ const createChatPost = async (req, res = response) => {
       res.status(500).json({ message: "We were unable to create the chat, please try again later.", error: error.toString() });
     }
   }  
+/**
+ * @swagger
+ * /createchat/:
+ *  put:
+ *    summary: Insert a new message
+ *    tags : [Chats]
+ *    requestBody:
+ *      required.true
+ *    content:
+ *      usernameFrom:
+ *        type: String
+ *        description: the username user to send message
+ *      usernameTo:
+ *        type: String
+ *        description: the username user to recive message
+ *      newMessage:
+ *        type: String
+ *        description: contain body of message
+ *      date:
+ *        type: date
+ *        description: date of send message
+ *    responses:
+ *      201:
+ *        description: get chat
+ *      500:
+ *        description: error server
+ */
 const addNewMessagePut = async (req, res = response) =>{
     const{usernameFrom, usernameTo, newMessage, date} = req.body;
     try{
@@ -27,6 +80,27 @@ const addNewMessagePut = async (req, res = response) =>{
         res.status(500).json({message:"We were unable to send message, please try again later.", error})
     }
 }
+/**
+ * @swagger
+ * /createchat/:
+ *  post:
+ *    summary: get chat
+ *    tags : [Chats]
+ *    requestBody:
+ *      required.true
+ *    content:
+ *      usernameFrom:
+ *        type: String
+ *        description: the username user to send message
+ *      usernameTo:
+ *        type: String
+ *        description: the username user to recive message
+ *    responses:
+ *      201:
+ *        description: get chat
+ *      500:
+ *        description: error server
+ */
 const getMessages = async (req, res = response) => {
     const { usernameFrom, usernameTo } = req.body;
     try {
